@@ -15,11 +15,11 @@ export const ParticleBackground: React.FC = React.memo(() => {
     const initVanta = async () => {
       try {
         // @ts-ignore
-        const CELLS = (await import('vanta/dist/vanta.cells.min')).default;
+        const DOTS = (await import('vanta/dist/vanta.dots.min')).default;
         
         if (cancelled || !vantaRef.current) return;
 
-        effect = CELLS({
+        effect = DOTS({
           el: vantaRef.current,
           THREE: THREE,
           mouseControls: true,
@@ -28,10 +28,13 @@ export const ParticleBackground: React.FC = React.memo(() => {
           minHeight: 200.00,
           minWidth: 200.00,
           scale: 1.00,
-          color1: 0x6b6d4, // Teal accent
-          color2: 0x38bdf8, // Sky blue accent
-          size: 1.50,
-          speed: 1.50,
+          scaleMobile: 1.00,
+          color: 0x38bdf8,
+          color2: 0x06b6d4,
+          backgroundColor: 0x050d1a,
+          size: 3.00,
+          spacing: 35.00,
+          showLines: true,
         });
       } catch (e) {
         console.error('Vanta.js initialization error:', e);
