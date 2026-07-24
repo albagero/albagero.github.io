@@ -34,7 +34,7 @@ const AboutSection: React.FC = () => {
               <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-cyan-accent/30 rounded-2xl -z-10 transition-transform duration-300 group-hover:-translate-x-2 group-hover:-translate-y-2"></div>
               <div className="w-full h-full rounded-2xl overflow-hidden border-2 border-cyan-accent/20 relative z-10 transition-colors duration-300 group-hover:border-cyan-accent/50">
                 <img 
-                  src="/protofolio/avatar.jpg" 
+                  src="/avatar.jpg" 
                   alt="Albager Abdalsalam" 
                   className="object-cover w-full h-full"
                 />
