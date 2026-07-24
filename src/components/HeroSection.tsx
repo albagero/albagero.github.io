@@ -58,14 +58,14 @@ export const HeroSection: React.FC = () => {
           
           <motion.h2 
             variants={itemVariants}
-            className="text-slate-mid text-lg md:text-xl mt-6 font-light tracking-wide"
+            className="text-slate-light text-lg md:text-xl mt-6 font-light tracking-wide"
           >
             Biomedical Engineer • Medical Devices • AI in Healthcare
           </motion.h2>
           
           <motion.p 
             variants={itemVariants}
-            className="text-slate-dim text-base md:text-lg max-w-2xl mt-6 leading-relaxed text-center md:text-left"
+            className="text-slate-mid text-base md:text-lg max-w-2xl mt-6 leading-relaxed text-center md:text-left"
           >
             Engineering innovative healthcare solutions through biomedical technology and artificial intelligence.
           </motion.p>

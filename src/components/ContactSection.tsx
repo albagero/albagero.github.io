@@ -90,7 +90,7 @@ export const ContactSection = () => {
                 <h3 className="font-heading text-base font-semibold text-white mb-1">
                   {item.label}
                 </h3>
-                <span className="text-slate-dim text-sm">
+                <span className="text-slate-mid text-sm">
                   {item.value}
                 </span>
               </a>
