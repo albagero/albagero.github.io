@@ -1,60 +1,54 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 export const ParticleBackground: React.FC = React.memo(() => {
-  const vantaRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window as any).THREE = THREE;
-    }
-
-    let effect: any = null;
-    let cancelled = false;
-
-    const initVanta = async () => {
-      try {
-        // @ts-ignore
-        const DOTS = (await import('vanta/dist/vanta.dots.min')).default;
-        
-        if (cancelled || !vantaRef.current) return;
-
-        effect = DOTS({
-          el: vantaRef.current,
-          THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.00,
-          minWidth: 200.00,
-          scale: 1.00,
-          scaleMobile: 1.00,
-          color: 0x38bdf8,
-          color2: 0x06b6d4,
-          backgroundColor: 0x050d1a,
-          size: 3.00,
-          spacing: 35.00,
-          showLines: true,
-        });
-      } catch (e) {
-        console.error('Vanta.js initialization error:', e);
-      }
-    };
-
-    initVanta();
-
-    return () => {
-      cancelled = true;
-      if (effect) effect.destroy();
-    };
-  }, []);
-
   return (
-    <div
-      ref={vantaRef}
-      className="fixed inset-0 z-0 w-full h-full"
-      style={{ backgroundColor: '#050d1a' }}
-    />
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#050d1a]">
+      {/* Soft gradient orb 1 */}
+      <motion.div
+        className="absolute -top-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full mix-blend-screen filter blur-[100px] opacity-20"
+        style={{
+          background: 'radial-gradient(circle, rgba(56,189,248,0.8) 0%, rgba(56,189,248,0) 70%)',
+        }}
+        animate={{
+          x: [0, -30, 0],
+          y: [0, 40, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      
+      {/* Soft gradient orb 2 */}
+      <motion.div
+        className="absolute -bottom-[10%] -left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[120px] opacity-20"
+        style={{
+          background: 'radial-gradient(circle, rgba(139,92,246,0.6) 0%, rgba(139,92,246,0) 70%)',
+        }}
+        animate={{
+          x: [0, 40, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.15, 1],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Subtle overlay to add a bit of texture/mesh feel if needed */}
+      <div 
+        className="absolute inset-0 opacity-[0.02]" 
+        style={{
+          backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)',
+          backgroundSize: '40px 40px'
+        }}
+      />
+    </div>
   );
 });
 
