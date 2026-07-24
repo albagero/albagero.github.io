@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-// @ts-ignore
-import NET from 'vanta/dist/vanta.net.min';
 
 export const ParticleBackground: React.FC = React.memo(() => {
-  const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,10 +10,16 @@ export const ParticleBackground: React.FC = React.memo(() => {
     }
 
     let effect: any = null;
+    let cancelled = false;
 
-    if (!vantaEffect && vantaRef.current) {
+    const initVanta = async () => {
       try {
-        effect = NET({
+        // @ts-ignore
+        const TOPOLOGY = (await import('vanta/dist/vanta.topology.min')).default;
+        
+        if (cancelled || !vantaRef.current) return;
+
+        effect = TOPOLOGY({
           el: vantaRef.current,
           THREE: THREE,
           mouseControls: true,
@@ -28,18 +31,16 @@ export const ParticleBackground: React.FC = React.memo(() => {
           scaleMobile: 1.00,
           color: 0x38bdf8,
           backgroundColor: 0x050d1a,
-          points: 13.00,
-          maxDistance: 22.00,
-          spacing: 16.00,
-          showDots: true,
         });
-        setVantaEffect(effect);
       } catch (e) {
         console.error('Vanta.js initialization error:', e);
       }
-    }
+    };
+
+    initVanta();
 
     return () => {
+      cancelled = true;
       if (effect) effect.destroy();
     };
   }, []);
@@ -47,7 +48,8 @@ export const ParticleBackground: React.FC = React.memo(() => {
   return (
     <div
       ref={vantaRef}
-      className="fixed inset-0 z-0 pointer-events-none w-full h-full bg-[#050d1a]"
+      className="fixed inset-0 z-0 w-full h-full"
+      style={{ backgroundColor: '#050d1a' }}
     />
   );
 });
