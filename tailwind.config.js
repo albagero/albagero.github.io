@@ -8,42 +8,51 @@ export default {
     extend: {
       colors: {
         navy: {
-          900: '#0a192f',
-          800: '#112240',
-          700: '#1d3557',
-          600: '#233554',
+          950: '#050d1a',
+          900: '#0a1628',
+          800: '#0f1e36',
+          700: '#162a4a',
+          600: '#1e3a5f',
         },
-        'cyan-accent': '#00d4ff',
-        'mint': '#64ffda',
-        'slate-light': '#ccd6f6',
-        'slate-mid': '#8892b0',
+        sky: {
+          accent: '#38bdf8',
+        },
+        cyan: {
+          accent: '#06b6d4',
+        },
+        'slate-light': '#e2e8f0',
+        'slate-mid': '#94a3b8',
+        'slate-dim': '#64748b',
       },
       fontFamily: {
         heading: ['Outfit', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
-        'float-delayed': 'float 8s ease-in-out 2s infinite',
-        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+        'float-slow': 'float 10s ease-in-out infinite',
+        'pulse-soft': 'pulseSoft 4s ease-in-out infinite',
         'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+        'shimmer': 'shimmer 3s ease-in-out infinite',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-15px)' },
         },
-        pulseGlow: {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '1' },
+        pulseSoft: {
+          '0%, 100%': { opacity: '0.3' },
+          '50%': { opacity: '0.8' },
         },
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(30px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-      },
-      backdropBlur: {
-        xs: '2px',
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
     },
   },

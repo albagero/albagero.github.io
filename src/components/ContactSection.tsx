@@ -1,35 +1,36 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Linkedin, Github, Phone, Send } from 'lucide-react';
 
-const contactMethods = [
+const contactItems = [
   {
-    icon: Mail,
+    id: 1,
     label: 'Email',
     value: 'albagersalam@gmail.com',
+    icon: Mail,
     href: 'mailto:albagersalam@gmail.com',
-    target: '_self',
   },
   {
-    icon: Linkedin,
+    id: 2,
     label: 'LinkedIn',
     value: 'linkedin.com/in/yourname',
+    icon: Linkedin,
     href: 'https://linkedin.com/in/yourname',
     target: '_blank',
   },
   {
-    icon: Github,
+    id: 3,
     label: 'GitHub',
     value: 'github.com/albagero',
+    icon: Github,
     href: 'https://github.com/albagero',
     target: '_blank',
   },
   {
-    icon: Phone,
+    id: 4,
     label: 'Phone',
     value: '+249 XXX XXX XXX',
+    icon: Phone,
     href: 'tel:+249XXXXXXXXX',
-    target: '_self',
   },
 ];
 
@@ -45,28 +46,25 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: 'easeOut' },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
 
-const ContactSection: React.FC = () => {
+export const ContactSection = () => {
   return (
-    <section id="contact" className="snap-section flex items-center justify-center py-20 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto w-full text-center">
+    <section id="contact" className="snap-section flex flex-col justify-center py-24">
+      <div className="max-w-4xl mx-auto w-full text-center px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.5 }}
+          className="mb-14"
         >
-          <h2 className="section-title mb-6 flex items-center justify-center gap-2">
-            <span className="text-cyan-accent font-mono text-xl md:text-2xl mr-2">06.</span>
-            Let's Connect
-          </h2>
-          <p className="section-subtitle mx-auto mb-12">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <span className="text-sky-400 font-mono text-lg">06.</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-light">Let's Connect</h2>
+          </div>
+          <p className="text-slate-mid text-base max-w-2xl mx-auto">
             I'm always interested in discussing biomedical engineering, healthcare technology, AI, and exciting collaboration opportunities.
           </p>
         </motion.div>
@@ -75,44 +73,43 @@ const ContactSection: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          viewport={{ once: true, margin: '-100px' }}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-5"
         >
-          {contactMethods.map((method, index) => {
-            const Icon = method.icon;
-            return (
-              <motion.a
-                key={index}
-                variants={itemVariants}
-                href={method.href}
-                target={method.target}
-                rel={method.target === '_blank' ? 'noopener noreferrer' : undefined}
-                className="glass-card p-6 flex flex-col items-center text-center group hover:-translate-y-1 transition-transform duration-300"
+          {contactItems.map((item) => (
+            <motion.div key={item.id} variants={itemVariants}>
+              <a
+                href={item.href}
+                target={item.target}
+                rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
+                className="glass-card p-6 flex flex-col items-center text-center group block h-full no-underline"
               >
-                <Icon className="w-8 h-8 text-cyan-accent mb-3 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="font-heading text-lg font-semibold text-slate-light mb-1">
-                  {method.label}
+                <div className="w-12 h-12 rounded-xl bg-sky-400/10 flex items-center justify-center mb-4 group-hover:bg-sky-400/20 group-hover:scale-105 transition-all duration-300">
+                  <item.icon className="w-5 h-5 text-sky-400" />
+                </div>
+                <h3 className="font-heading text-base font-semibold text-white mb-1">
+                  {item.label}
                 </h3>
-                <p className="text-slate-mid text-sm">
-                  {method.value}
-                </p>
-              </motion.a>
-            );
-          })}
+                <span className="text-slate-dim text-sm">
+                  {item.value}
+                </span>
+              </a>
+            </motion.div>
+          ))}
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-12"
         >
           <a
             href="mailto:albagersalam@gmail.com"
-            className="btn-primary inline-flex items-center gap-2"
+            className="btn-primary inline-flex items-center gap-2 px-8 py-4 bg-sky-500 hover:bg-sky-400 text-slate-900 font-semibold rounded-lg transition-colors"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
             Get In Touch
           </a>
         </motion.div>

@@ -3,19 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { name: 'Home', href: 'hero' },
-  { name: 'About', href: 'about' },
-  { name: 'Skills', href: 'skills' },
-  { name: 'Education', href: 'education' },
-  { name: 'Experience', href: 'experience' },
-  { name: 'Research', href: 'research' },
-  { name: 'Contact', href: 'contact' },
+  { id: 'hero', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'education', label: 'Education' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'research', label: 'Research' },
+  { id: 'contact', label: 'Contact' },
 ];
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,34 +27,27 @@ export const Navbar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-50% 0px',
-      threshold: 0,
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -80% 0px' }
+    );
 
-    const observerCallback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    NAV_ITEMS.forEach(({ href }) => {
-      const element = document.getElementById(href);
-      if (element) {
-        observer.observe(element);
-      }
+    NAV_ITEMS.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
     });
 
     return () => observer.disconnect();
   }, []);
 
   const scrollToSection = (id: string) => {
-    setIsMobileMenuOpen(false);
+    setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -62,84 +55,88 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-navy-900/90 backdrop-blur-md border-b border-cyan-accent/10 py-4 shadow-lg shadow-navy-900/50'
-            : 'bg-transparent py-6'
-        }`}
-      >
-        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
-          <div
-            className="font-heading text-2xl font-bold gradient-text cursor-pointer"
-            onClick={() => scrollToSection('hero')}
-          >
-            A.
-          </div>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className={`text-sm font-medium transition-colors hover:text-cyan-accent ${
-                  activeSection === item.href ? 'text-cyan-accent' : 'text-slate'
-                }`}
-              >
-                {item.name}
-              </button>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-cyan-accent hover:text-white transition-colors"
-            onClick={() => setIsMobileMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu size={28} />
-          </button>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-navy-950/80 backdrop-blur-xl border-b border-white/5 shadow-lg py-4'
+          : 'bg-transparent py-6'
+      }`}
+    >
+      <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
+        {/* Logo */}
+        <div 
+          className="text-2xl font-bold font-heading cursor-pointer gradient-text"
+          onClick={() => scrollToSection('hero')}
+        >
+          A.
         </div>
-      </header>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          {NAV_ITEMS.map(({ id, label }) => (
+            <button
+              key={id}
+              onClick={() => scrollToSection(id)}
+              className={`text-sm font-medium transition-colors duration-300 ${
+                activeSection === id
+                  ? 'text-sky-400'
+                  : 'text-slate-mid hover:text-sky-400'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </nav>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          className="md:hidden text-white p-2 focus:outline-none"
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open Menu"
+        >
+          <Menu size={24} />
+        </button>
+      </div>
 
       {/* Mobile Nav Drawer */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {mobileMenuOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="mobile-menu-overlay fixed inset-0 bg-navy-900/80 backdrop-blur-sm z-[51] md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 z-40 md:hidden"
+              onClick={() => setMobileMenuOpen(false)}
             />
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-              className="mobile-menu-drawer fixed top-0 right-0 h-full w-64 bg-navy-800 shadow-2xl border-l border-cyan-accent/20 z-[52] flex flex-col pt-20 px-8 md:hidden"
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 w-64 bg-navy-900 border-l border-white/5 z-50 flex flex-col md:hidden shadow-2xl"
             >
-              <button
-                className="absolute top-6 right-6 text-slate hover:text-cyan-accent transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-                aria-label="Close menu"
-              >
-                <X size={28} />
-              </button>
-
-              <nav className="flex flex-col space-y-6 mt-8">
-                {NAV_ITEMS.map((item) => (
+              <div className="flex justify-end p-6">
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-white p-2 focus:outline-none"
+                  aria-label="Close Menu"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <nav className="flex flex-col px-8 gap-6 mt-8">
+                {NAV_ITEMS.map(({ id, label }) => (
                   <button
-                    key={item.name}
-                    onClick={() => scrollToSection(item.href)}
-                    className={`text-left text-lg font-medium transition-colors hover:text-cyan-accent ${
-                      activeSection === item.href ? 'text-cyan-accent' : 'text-slate-light'
+                    key={id}
+                    onClick={() => scrollToSection(id)}
+                    className={`text-left text-lg font-medium transition-colors duration-300 ${
+                      activeSection === id
+                        ? 'text-sky-400'
+                        : 'text-slate-mid hover:text-sky-400'
                     }`}
                   >
-                    {item.name}
+                    {label}
                   </button>
                 ))}
               </nav>
@@ -147,7 +144,7 @@ export const Navbar: React.FC = () => {
           </>
         )}
       </AnimatePresence>
-    </>
+    </header>
   );
 };
 

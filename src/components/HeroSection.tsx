@@ -2,78 +2,103 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Download, ChevronDown } from 'lucide-react';
 
-const HeroSection: React.FC = () => {
+export const HeroSection: React.FC = () => {
+  const scrollToContact = () => {
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.2,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-  };
-
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    hidden: { opacity: 0, y: 40 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.22, 1, 0.36, 1] 
+      }
+    },
   };
 
   return (
-    <section id="hero" className="snap-section min-h-screen relative overflow-hidden flex items-center">
-      <motion.div
-        className="max-w-4xl mx-auto text-center md:text-left z-10 relative px-6 md:px-12 w-full"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.p variants={itemVariants} className="text-cyan-accent font-mono text-sm tracking-widest uppercase mb-4">
-          Hello, I am
-        </motion.p>
-        
-        <motion.h1 variants={itemVariants} className="font-heading text-5xl md:text-7xl font-bold text-slate-light">
-          Albager Abdalsalam
-        </motion.h1>
-        
-        <motion.h2 variants={itemVariants} className="gradient-text font-heading text-xl md:text-2xl font-semibold mt-4">
-          Biomedical Engineer | Medical Device Engineer | AI Enthusiast
-        </motion.h2>
-        
-        <motion.p variants={itemVariants} className="text-slate-mid text-lg max-w-2xl mt-6">
-          Engineering innovative healthcare solutions through biomedical technology, artificial intelligence.
-        </motion.p>
-        
-        <motion.div variants={itemVariants} className="flex flex-row justify-center md:justify-start gap-4 mt-8">
-          <button onClick={scrollToContact} className="btn-primary flex items-center gap-2">
-            <Mail size={20} />
-            Contact Me
-          </button>
+    <section 
+      id="hero" 
+      className="snap-section min-h-screen relative overflow-hidden flex items-center justify-center pt-20 pb-12"
+    >
+      <div className="container mx-auto px-6 relative z-10 w-full">
+        <motion.div 
+          className="max-w-5xl mx-auto text-center md:text-left flex flex-col items-center md:items-start"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.p 
+            variants={itemVariants}
+            className="text-sky-400 font-mono text-sm tracking-[0.25em] uppercase mb-6"
+          >
+            Hello, I am
+          </motion.p>
           
-          <a href="#" className="btn-outline flex items-center gap-2">
-            <Download size={20} />
-            Download CV
-          </a>
+          <motion.h1 
+            variants={itemVariants}
+            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight"
+          >
+            Albager <span className="gradient-text">Abdalsalam</span>
+          </motion.h1>
+          
+          <motion.h2 
+            variants={itemVariants}
+            className="text-slate-mid text-lg md:text-xl mt-6 font-light tracking-wide"
+          >
+            Biomedical Engineer • Medical Devices • AI in Healthcare
+          </motion.h2>
+          
+          <motion.p 
+            variants={itemVariants}
+            className="text-slate-dim text-base md:text-lg max-w-2xl mt-6 leading-relaxed text-center md:text-left"
+          >
+            Engineering innovative healthcare solutions through biomedical technology and artificial intelligence.
+          </motion.p>
+          
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-row gap-4 mt-10"
+          >
+            <button 
+              onClick={scrollToContact}
+              className="btn-primary flex items-center gap-2"
+            >
+              <Mail size={18} />
+              Get In Touch
+            </button>
+            <a 
+              href="#" 
+              className="btn-outline flex items-center gap-2"
+            >
+              <Download size={18} />
+              Download CV
+            </a>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       <motion.div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-60"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.6 }}
+        animate={{ opacity: 0.5 }}
         transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce"
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        >
-          <ChevronDown size={32} className="text-slate-light" />
-        </motion.div>
+        <ChevronDown size={28} className="text-white" />
       </motion.div>
     </section>
   );
